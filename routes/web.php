@@ -27,8 +27,9 @@ Route::group(['namespace' => '\User\Api'], function() {
     Route::get('/user/{user}/pokedex', 'UserController@getUserPokedex');
     Route::get('/user/{user}/game-component', 'UserController@getGameComponent');
     Route::post('/user/{user}/attack/update', 'UserController@updateAttack');
-
-    Route::post('/battle/{user}/{pokemon}/win', 'UserController@updateUserLog');    
+    Route::post('/battle/{user}/{pokemon}/win', 'UserController@updateUserLog'); 
+    
+    Route::get('/avatars/count', 'MiscController@getAvatarsCount');
 });
 
 Route::group(['namespace' => '\User\Api', 'prefix' => '/simulation'], function() {
