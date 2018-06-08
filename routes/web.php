@@ -15,9 +15,12 @@ Route::get('/', function () {
     die('pokemath api');
 });
 
-Route::group(['namespace' => '\User\Auth'], function(){
+Route::group(['namespace' => '\User\Auth'], function() {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
+});
+
+Route::group(['namespace' => '\User\Api'], function() {
     Route::get('/avatars/count', 'MiscController@getAvatarsCount');    
 });
 
