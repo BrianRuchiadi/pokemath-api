@@ -42,7 +42,7 @@ class PokedexManager {
 
     function userPokedexSql($userId) {
         $sql = "
-            SELECT p.`id`, p.`name`, up.`user_id`
+            SELECT p.`id`, p.`name`, up.`user_id`, p.`image`
                 FROM `t0301_pokemon` p
                     LEFT JOIN `t0102_user_pokemon` up
                     ON p.`id` = up.`pokemon_id`

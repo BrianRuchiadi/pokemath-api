@@ -10,7 +10,6 @@ class Pokemon extends Model {
         'name',
         'sprite',
         'image',
-        'unlock_point',
         'health_point',
     ];
     protected $hidden = [
