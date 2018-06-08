@@ -16,23 +16,18 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => '\User\Auth'], function(){
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@register');
+    Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
+    Route::get('/avatars/count', 'MiscController@getAvatarsCount');    
 });
 
-Route::group(['namespace' => '\User\Api'], function() {
+Route::group(['namespace' => '\User\Api', 'middleware' => 'auth:api'], function() {
     Route::get('/stage/{stage}/pokemons', 'StageController@getStagePokemons');
     Route::get('/stages/concise', 'StageController@getAllStagesConcise');
     
-    Route::get('/user/{user}/pokedex', 'UserController@getUserPokedex');
-    Route::get('/user/{user}/game-component', 'UserController@getGameComponent');
-    Route::post('/user/{user}/attack/update', 'UserController@updateAttack');
-    Route::post('/battle/{user}/{pokemon}/win', 'UserController@updateUserLog'); 
+    Route::get('/user/pokedex', 'UserController@getUserPokedex');
+    Route::get('/user/game-component', 'UserController@getGameComponent');
+    Route::post('/user/attack/update', 'UserController@updateAttack');
+    Route::post('/battle/{pokemon}/win', 'UserController@updateUserLog'); 
     
-    Route::get('/avatars/count', 'MiscController@getAvatarsCount');
-});
-
-Route::group(['namespace' => '\User\Api', 'prefix' => '/simulation'], function() {
-    Route::get('/stage/{stage}/pokemons', 'StageController@getStagePokemons');
-    Route::get('/user/{user}/pokedex', 'UserController@getUserPokedex');
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\Auth;
 
+use Auth;
 use DB;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,34 @@ class AuthController extends Controller {
     // }
 
     function login(Request $request) {
-        return 'login API';
+        if (!$request->username) {
+            return response()->json([
+                "username" => 'username must be filled'
+            ], 500);
+        }
+
+        if (!$request->password) {
+            return response()->json([
+                "password" => 'password must be filled'
+            ], 500);
+        }
+
+        $validUser = Auth::guard('web')->attempt([
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+
+        if (!$validUser) {
+            return response()->json([
+                "password" => 'credentials invalid'
+            ], 500);
+        }
+
+        $user = User::where('username', $request->username)->first();
+
+        return response()->json([
+            'token' => $user->createToken('Pokemath')->accessToken
+        ]);
     }
 
     function register(Request $request) {
@@ -41,7 +69,7 @@ class AuthController extends Controller {
         $password = $request->username;
         $token = null;
 
-        DB::transaction(function() use($request, &$password) {
+        DB::transaction(function() use($request, &$password, &$token) {
             $newUser = User::create([
                 'username' => $request->username,
                 'avatar_id' => $request->avatarId,
