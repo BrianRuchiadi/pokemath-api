@@ -20,6 +20,10 @@ Route::group(['namespace' => '\User\Auth'], function() {
     Route::post('/register', 'AuthController@register');
 });
 
+Route::group(['namespace' => '\User\Auth', 'middleware' => 'auth:api'], function() {
+    Route::post('/password/update', 'AuthController@updatePassword');
+});
+
 Route::group(['namespace' => '\User\Api'], function() {
     Route::get('/avatars/count', 'MiscController@getAvatarsCount');    
 });

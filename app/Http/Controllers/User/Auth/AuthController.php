@@ -91,4 +91,25 @@ class AuthController extends Controller {
             'accessToken' => $token
         ]);
     }
+
+    function updatePassword(Request $request) {
+        if (!$request->password) {
+            return response()->json([
+                "password" => 'password must be filled'
+            ], 500);
+        }
+
+        if (strlen($request->password) < 6) {
+            return response()->json([
+                "password" => 'password must contain more than 6 characters'
+            ], 500);
+        }
+
+        $newPassword = Hash::make($request->password);
+
+        $user = Auth::user();
+        $user->update([
+            'password' => $newPassword
+        ]);
+    }
 }
