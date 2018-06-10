@@ -66,19 +66,19 @@ class AuthController extends Controller {
             ], 500);
         }
 
-        $password = $request->username;
+        $password = strtolower($request->username);
         $token = null;
 
         DB::transaction(function() use($request, &$password, &$token) {
             $newUser = User::create([
-                'username' => $request->username,
+                'username' => strtolower($request->username),
                 'avatar_id' => $request->avatarId,
                 'password' => Hash::make($password)
             ]);
             $userGameLog = UserGameLog::create(['user_id' => $newUser->id]);
     
             $token = $newUser->createToken('pokemath')->accessToken;
-            $password = $request->username . $newUser->id;
+            $password = strtolower($request->username) . $newUser->id;
     
             $newUser->update([
                 'password' => Hash::make($password)
